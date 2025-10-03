@@ -735,7 +735,7 @@ def graph_mem(request, username, job_id):
         dtype=int,
     )
 
-    mem_scale_factor = 2**30  # GiB
+    mem_scale_factor = 1024*1024*1024 # GiB
     multi_nodes = len(set((series['metric'][settings.PROM_NODE_HOSTNAME_LABEL] for series in series_list))) > 1
     maximum = 0
 
