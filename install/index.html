@@ -19,7 +19,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -27,7 +27,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
       
 
@@ -630,6 +630,62 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../oidc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OIDC / OAuth
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../oauth2jwt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OAuth2 + JWT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -700,7 +756,7 @@ The various recommendations for any normal Django production deployment can be f
 <li><code>xmlsec1-openssl</code> (for SAML)</li>
 </ul>
 <p>Python &gt;= 3.9 is required to fix a CVE in NumPy, you can install that version on Rocky8 inside a python virtualenv</p>
-<div class="highlight"><pre><span></span><code>/usr/bin/virtualenv-3 --python=&quot;/usr/bin/python3.9&quot; /var/www/userportal-env
+<div class="highlight"><pre><span></span><code>/usr/bin/virtualenv-3 --python="/usr/bin/python3.9" /var/www/userportal-env
 </code></pre></div>
 <p>A file in the python env needs to be patched, check the diff in <code>ldapdb.patch</code> if using the ldapdb module.</p>
 <p>Static files are handled by Apache and need to be collected since python will not serve them:</p>
@@ -711,36 +767,36 @@ The various recommendations for any normal Django production deployment can be f
   ServerName userportal.int.ets1.calculquebec.ca
 
   ## Vhost docroot
-  DocumentRoot &quot;/var/www/userportal&quot;
+  DocumentRoot "/var/www/userportal"
   ## Alias declarations for resources outside the DocumentRoot
-  Alias /static &quot;/var/www/userportal-static&quot;
-  Alias /favicon.ico &quot;/var/www/userportal-static/favicon.ico&quot;
+  Alias /static "/var/www/userportal-static"
+  Alias /favicon.ico "/var/www/userportal-static/favicon.ico"
 
   ## Directories, there should at least be a declaration for /var/www/userportal
 
-  &lt;Directory &quot;/var/www/userportal/&quot;&gt;
+  &lt;Directory "/var/www/userportal/"&gt;
     AllowOverride None
     Require all granted
   &lt;/Directory&gt;
 
-  &lt;Directory &quot;/var/www/userportal/static&quot;&gt;
+  &lt;Directory "/var/www/userportal/static"&gt;
     AllowOverride None
     Require all granted
   &lt;/Directory&gt;
 
   ## Logging
-  ErrorLog &quot;/var/log/httpd/userportal.int.ets1.calculquebec.ca_error_ssl.log&quot;
+  ErrorLog "/var/log/httpd/userportal.int.ets1.calculquebec.ca_error_ssl.log"
   ServerSignature Off
-  CustomLog &quot;/var/log/httpd/userportal.int.ets1.calculquebec.ca_access_ssl.log&quot; combined
+  CustomLog "/var/log/httpd/userportal.int.ets1.calculquebec.ca_access_ssl.log" combined
 
   ## SSL directives
   SSLEngine on
-  SSLCertificateFile      &quot;/etc/pki/tls/certs/userportal.int.ets1.calculquebec.ca.crt&quot;
-  SSLCertificateKeyFile   &quot;/etc/pki/tls/private/userportal.int.ets1.calculquebec.ca.key&quot;
+  SSLCertificateFile      "/etc/pki/tls/certs/userportal.int.ets1.calculquebec.ca.crt"
+  SSLCertificateKeyFile   "/etc/pki/tls/private/userportal.int.ets1.calculquebec.ca.key"
   WSGIApplicationGroup %{GLOBAL}
   WSGIDaemonProcess userportal python-home=/var/www/userportal-env python-path=/var/www/userportal/
   WSGIProcessGroup userportal
-  WSGIScriptAlias / &quot;/var/www/userportal/userportal/wsgi.py&quot;
+  WSGIScriptAlias / "/var/www/userportal/userportal/wsgi.py"
 &lt;/VirtualHost&gt;
 </code></pre></div>
 <h2 id="apache-virtualhost-config-for-gunicorn">Apache virtualhost config for Gunicorn</h2>
@@ -748,18 +804,18 @@ The various recommendations for any normal Django production deployment can be f
 <div class="highlight"><pre><span></span><code>Listen 8000
 
 &lt;VirtualHost *:8000&gt;
-  DocumentRoot &quot;/var/www/userportal&quot;
-  Alias /static &quot;/var/www/userportal-static&quot;
+  DocumentRoot "/var/www/userportal"
+  Alias /static "/var/www/userportal-static"
 
   ProxyPass / http://127.0.0.1:8001/
-  ProxyPassReverse / &quot;http://127.0.0.1:8001/&quot;
+  ProxyPassReverse / "http://127.0.0.1:8001/"
 
-  &lt;Directory &quot;/var/www/userportal/&quot;&gt;
+  &lt;Directory "/var/www/userportal/"&gt;
     AllowOverride None
     Require all granted
   &lt;/Directory&gt;
 
-  &lt;Directory &quot;/var/www/userportal/static&quot;&gt;
+  &lt;Directory "/var/www/userportal/static"&gt;
     AllowOverride None
     Require all granted
   &lt;/Directory&gt;
@@ -767,7 +823,7 @@ The various recommendations for any normal Django production deployment can be f
 &lt;/VirtualHost&gt;
 </code></pre></div>
 <h1 id="django-authentication">Django Authentication</h1>
-<p>This portal is using the standard django authentication, multiple backends are supported, we are using SAML2 and the FreeIPA backend, on different clusters. Users with the is_staff attribute can access other users pages and the <code>top</code> module. </p>
+<p>This portal is using standard Django authentication. Multiple backends are supported; we are using SAML2, OIDC/OAuth, and the FreeIPA/LDAP backend on different clusters. Users with the is_staff attribute can access other users' pages and the <code>top</code> module.</p>
 <h2 id="saml2">SAML2</h2>
 <p>For SAML2, certificates need to be generated and the metadata.xml need a little modification.</p>
 <div class="highlight"><pre><span></span><code>openssl req -nodes -new -x509 -newkey rsa:2048 -days 3650 -keyout private.key -out public.cert
@@ -850,7 +906,7 @@ python manage.py makemessages -a -d djangojs
       <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>
